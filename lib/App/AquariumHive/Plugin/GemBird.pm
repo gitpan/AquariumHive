@@ -2,7 +2,7 @@ package App::AquariumHive::Plugin::GemBird;
 BEGIN {
   $App::AquariumHive::Plugin::GemBird::AUTHORITY = 'cpan:GETTY';
 }
-$App::AquariumHive::Plugin::GemBird::VERSION = '0.002';
+$App::AquariumHive::Plugin::GemBird::VERSION = '0.003';
 use Moo;
 use App::AquariumHive::Tile;
 use JSON::MaybeXS;
@@ -133,7 +133,7 @@ App::AquariumHive::Plugin::GemBird
 
 =head1 VERSION
 
-version 0.002
+version 0.003
 
 =head1 DESCRIPTION
 

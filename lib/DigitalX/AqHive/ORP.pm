@@ -2,7 +2,7 @@ package DigitalX::AqHive::ORP;
 BEGIN {
   $DigitalX::AqHive::ORP::AUTHORITY = 'cpan:GETTY';
 }
-$DigitalX::AqHive::ORP::VERSION = '0.002';
+$DigitalX::AqHive::ORP::VERSION = '0.003';
 use Digital::Driver;
 
 with qw(
@@ -23,7 +23,7 @@ DigitalX::AqHive::ORP
 
 =head1 VERSION
 
-version 0.002
+version 0.003
 
 =head1 DESCRIPTION
 

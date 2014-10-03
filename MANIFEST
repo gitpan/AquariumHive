@@ -23,7 +23,6 @@ lib/App/AquariumHive/Role.pm
 lib/App/AquariumHive/Tile.pm
 lib/AquariumHive.pm
 lib/AquariumHive/Simulator.pm
-lib/AquariumHive/State.pm
 lib/DigitalX/AqHive.pm
 lib/DigitalX/AqHive/EC.pm
 lib/DigitalX/AqHive/ORP.pm

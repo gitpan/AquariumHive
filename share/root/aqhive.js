@@ -11,6 +11,10 @@ $(function(){
 
   var container = $('#main-tile-container');
 
+  $.getJSON('/name', function(name) {
+    $('#aqname').text(name);
+  });
+
   $.getJSON('/tiles', function(tiles) {
     var tile_count = tiles.length;
     var tile_loaded = 0;
@@ -29,6 +33,10 @@ $(function(){
           });
           container.shapeshift({
             minColumns: 2,
+            enableDrag: false,
+            enableCrossDrop: false,
+            enableResize: false,
+            enableTrash: false,
           });
           socket.emit('aqhive',{ cmd: 'data' });
         }

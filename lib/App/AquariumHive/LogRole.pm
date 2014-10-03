@@ -2,7 +2,7 @@ package App::AquariumHive::LogRole;
 BEGIN {
   $App::AquariumHive::LogRole::AUTHORITY = 'cpan:GETTY';
 }
-$App::AquariumHive::LogRole::VERSION = '0.002';
+$App::AquariumHive::LogRole::VERSION = '0.003';
 use Moo::Role;
 
 with 'MooX::Role::Logger';
@@ -31,7 +31,7 @@ App::AquariumHive::LogRole
 
 =head1 VERSION
 
-version 0.002
+version 0.003
 
 =head1 AUTHOR
 

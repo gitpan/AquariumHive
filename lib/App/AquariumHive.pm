@@ -3,7 +3,7 @@ BEGIN {
   $App::AquariumHive::AUTHORITY = 'cpan:GETTY';
 }
 # ABSTRACT: Temporary Daemon - will later be replaced by HiveHub
-$App::AquariumHive::VERSION = '0.002';
+$App::AquariumHive::VERSION = '0.003';
 our $VERSION ||= '0.000';
 
 use MooX qw(
@@ -66,6 +66,32 @@ option 'simulation' => (
   is => 'ro',
   default => 0,
   doc => 'Simulate Aquarium Hive hardware',
+);
+
+option 'name' => (
+  is => 'ro',
+  format => 's',
+  default => 'AQHIVE',
+  doc => 'Name on top of interface',
+);
+
+option 'sensor_rows' => (
+  is => 'ro',
+  format => 's',
+  default => 2,
+  doc => 'Number of sensor rows in use',
+);
+
+option 'no_pwm' => (
+  is => 'ro',
+  default => 0,
+  doc => 'No pwm controls',
+);
+
+option 'no_power' => (
+  is => 'ro',
+  default => 0,
+  doc => 'No power controls',
 );
 
 option 'serial' => (
@@ -199,7 +225,9 @@ has simulator => (
 
 sub _build_simulator {
   my ( $self ) = @_;
-  return AquariumHive::Simulator->new;
+  return AquariumHive::Simulator->new(
+    sensor_rows => $self->sensor_rows,
+  );
 }
 
 has uart => (
@@ -336,6 +364,9 @@ sub _build_web {
         })] ];
       }
     };
+    mount '/name' => sub {
+      return [ 200, [ "Content-Type" => "application/json" ], ['"'.$self->name.'"'] ];
+    };
     mount '/tiles' => sub {
       return [ 200, [ "Content-Type" => "application/json" ], [encode_json([sort { $a cmp $b } keys %{$self->tiles}])] ];
     };
@@ -415,7 +446,7 @@ App::AquariumHive - Temporary Daemon - will later be replaced by HiveHub
 
 =head1 VERSION
 
-version 0.002
+version 0.003
 
 =head1 DESCRIPTION
 

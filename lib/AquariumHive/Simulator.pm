@@ -2,13 +2,12 @@ package AquariumHive::Simulator;
 BEGIN {
   $AquariumHive::Simulator::AUTHORITY = 'cpan:GETTY';
 }
-$AquariumHive::Simulator::VERSION = '0.002';
+$AquariumHive::Simulator::VERSION = '0.003';
 use Moo;
 use AnyEvent::Handle;
 use AnyEvent::Util 'portable_socketpair';
 use HiveJSO;
 use DDP;
-use AquariumHive::State;
 
 sub BUILD {
   my ( $self ) = @_;
@@ -59,20 +58,27 @@ sub _build_fh {
   return $self->_portable_socketpair->[0];
 }
 
+has sensor_rows => (
+  is => 'lazy',
+);
+
+sub _build_sensor_rows { 2 }
+
 has pulse => (
   is => 'lazy',
 );
 
 sub _build_pulse {
   my ( $self ) = @_;
+  return unless $self->sensor_rows;
   return AE::timer 0, 60, sub {
-    for my $no (1..2) {
+    for my $no (1..$self->sensor_rows) {
       for my $sensor (qw( ph orp ec temp )) {
         my $attr = $sensor.$no;
         my $next = 'next_'.$sensor;
-        my $current = $self->state->$attr;
+        my $current = $self->state->{$attr};
         my $new = $self->$next($current);
-        $self->state->$attr($new);
+        $self->state->{$attr} = $new;
       }
     }
   };
@@ -85,13 +91,13 @@ has state => (
 
 sub _build_state {
   my ( $self ) = @_;
-  return AquariumHive::State->new(
+  return {
     (map { 'pwm'.$_, 0 } (1..6)),
-    (map { 'ph'.$_, $self->next_ph } (1..2)),
-    (map { 'orp'.$_, $self->next_orp } (1..2)),
-    (map { 'ec'.$_, $self->next_ec } (1..2)),
-    (map { 'temp'.$_, $self->next_temp } (1..2)),
-  );
+    (map { 'ph'.$_, $self->next_ph } (1..$self->sensor_rows)),
+    (map { 'orp'.$_, $self->next_orp } (1..$self->sensor_rows)),
+    (map { 'ec'.$_, $self->next_ec } (1..$self->sensor_rows)),
+    (map { 'temp'.$_, $self->next_temp } (1..$self->sensor_rows)),
+  };
 }
 
 sub hivejso_base {
@@ -100,9 +106,9 @@ sub hivejso_base {
 
 sub state_to_hivejso {
   my ( $self ) = @_;
-  my %state = %{$self->state->data};
+  my %state = %{$self->state};
   my @data;
-  for my $key (@AquariumHive::State::attributes) {
+  for my $key (keys %state) {
     push @data, [$key, $state{$key}];
   }
   return HiveJSO->new( $self->hivejso_base, data => \@data );
@@ -119,7 +125,7 @@ sub on_hivejso {
     if ($hivejso->command_cmd eq 'set_pwm') {
       my ( $no, $value ) = $hivejso->command_args;
       my $func = 'pwm'.$no;
-      $self->state->$func($value);
+      $self->state->{$func} = $value;
       $self->send_state;
     }
   }
@@ -174,7 +180,7 @@ AquariumHive::Simulator
 
 =head1 VERSION
 
-version 0.002
+version 0.003
 
 =head1 DESCRIPTION
 

@@ -2,7 +2,7 @@ package DigitalX::AqHive;
 BEGIN {
   $DigitalX::AqHive::AUTHORITY = 'cpan:GETTY';
 }
-$DigitalX::AqHive::VERSION = '0.002';
+$DigitalX::AqHive::VERSION = '0.003';
 use Moo::Role;
 
 has adc_fix => (
@@ -49,7 +49,7 @@ DigitalX::AqHive
 
 =head1 VERSION
 
-version 0.002
+version 0.003
 
 =head1 DESCRIPTION
 

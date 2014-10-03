@@ -2,7 +2,7 @@ package App::AquariumHive::DB;
 BEGIN {
   $App::AquariumHive::DB::AUTHORITY = 'cpan:GETTY';
 }
-$App::AquariumHive::DB::VERSION = '0.002';
+$App::AquariumHive::DB::VERSION = '0.003';
 use Moo;
 use namespace::clean;
 
@@ -47,7 +47,7 @@ App::AquariumHive::DB
 
 =head1 VERSION
 
-version 0.002
+version 0.003
 
 =head1 AUTHOR
 

@@ -3,7 +3,7 @@ BEGIN {
   $App::AquariumHive::Tile::AUTHORITY = 'cpan:GETTY';
 }
 # ABSTRACT: 
-$App::AquariumHive::Tile::VERSION = '0.002';
+$App::AquariumHive::Tile::VERSION = '0.003';
 use Moo;
 use Carp qw( croak );
 use HTML::Entities;
@@ -143,7 +143,7 @@ App::AquariumHive::Tile -
 
 =head1 VERSION
 
-version 0.002
+version 0.003
 
 =head1 AUTHOR
 

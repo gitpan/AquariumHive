@@ -2,7 +2,7 @@ package DigitalX::AqHive::pH;
 BEGIN {
   $DigitalX::AqHive::pH::AUTHORITY = 'cpan:GETTY';
 }
-$DigitalX::AqHive::pH::VERSION = '0.002';
+$DigitalX::AqHive::pH::VERSION = '0.003';
 use Digital::Driver;
 
 with qw(
@@ -56,7 +56,7 @@ DigitalX::AqHive::pH
 
 =head1 VERSION
 
-version 0.002
+version 0.003
 
 =head1 DESCRIPTION
 

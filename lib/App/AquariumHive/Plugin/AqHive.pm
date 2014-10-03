@@ -2,7 +2,7 @@ package App::AquariumHive::Plugin::AqHive;
 BEGIN {
   $App::AquariumHive::Plugin::AqHive::AUTHORITY = 'cpan:GETTY';
 }
-$App::AquariumHive::Plugin::AqHive::VERSION = '0.002';
+$App::AquariumHive::Plugin::AqHive::VERSION = '0.003';
 use Moo;
 use App::AquariumHive::Tile;
 use JSON::MaybeXS;
@@ -120,33 +120,35 @@ __JS__
       if ($sensor_names_and_units{$sensor}) {
         my ( $name, $func, $unit ) = @{$sensor_names_and_units{$sensor}};
         $aqhive{$key} = sprintf('%.1f',input( 'aqhive_'.$sensor, $val )->$func);
-      } elsif ($sensor eq 'pwm') {
+      } elsif ($sensor eq 'pwm' && !$self->no_pwm) {
         $self->pwm_step_state->{$no} = $self->pwm_to_step($val);
         $aqhive{$key} = ( $self->pwm_step_state->{$no} == 63
           ? 'MAX' : $self->pwm_step_state->{$no} );
       }
     }
     $app->send( aqhive => \%aqhive );
-    for my $no (1..2) {
-      $self->kioskd_client->call( Update => {
-        name => 'values'.$no,
-        type => 'text',
-        text => join(' ',(
-          $aqhive{'ph'.$no},'ph',
-          $aqhive{'orp'.$no},'mV',
-          $aqhive{'temp'.$no},'C',
-          $aqhive{'ec'.$no},'yS/cm',
-        )),
-        x => ( 6 + ( 30 * ( $no - 1 ) ) ),
-        y => 6,
-        w => 1000,
-        h => 30,
-        font_path => '/opt/kioskd/fonts/din1451alt.ttf',
-        font_point_size => 24,
-        colour => [255, 255, 255, 255],
-      })->cb(sub {
-        eval { $_[0]->recv };
-      });
+    if ($self->sensor_rows) {
+      for my $no (1..$self->sensor_rows) {
+        $self->kioskd_client->call( Update => {
+          name => 'values'.$no,
+          type => 'text',
+          text => join(' ',(
+            $aqhive{'ph'.$no},'ph',
+            $aqhive{'orp'.$no},'mV',
+            $aqhive{'temp'.$no},'C',
+            $aqhive{'ec'.$no},'yS/cm',
+          )),
+          x => ( 6 + ( 30 * ( $no - 1 ) ) ),
+          y => 6,
+          w => 1000,
+          h => 30,
+          font_path => '/opt/kioskd/fonts/din1451alt.ttf',
+          font_point_size => 24,
+          colour => [255, 255, 255, 255],
+        })->cb(sub {
+          eval { $_[0]->recv };
+        });
+      }
     }
   });
 
@@ -157,24 +159,25 @@ __JS__
     }
   });
 
-  for my $no (1..2) {
-    my $app = 'aqhive_sensors'.$no;
-    $self->web_mount( $app, sub {
-      return [ 200, [ "Content-Type" => "application/json" ], [encode_json({
-        html => <<__HTML__,
+  if ($self->sensor_rows) {
+    for my $no (1..$self->sensor_rows) {
+      my $app = 'aqhive_sensors'.$no;
+      $self->web_mount( $app, sub {
+        return [ 200, [ "Content-Type" => "application/json" ], [encode_json({
+          html => <<__HTML__,
   <h1 class="text-center">AquariumHive 1 Sensors $no</h1>
   <hr/>
 
 __HTML__
-      })] ];
-    });
-    for my $sensor (qw( temp ph orp ec )) {
-      my $id = 'aqhive_'.$sensor.$no;
-      my ( $name, $func, $unit ) = @{$sensor_names_and_units{$sensor}};
-      $self->add_tile( 'aqhive_'.$sensor.$no => App::AquariumHive::Tile->new(
-        id => $id,
-        bgcolor => 'lightTeal',
-        content => <<"__HTML__",
+        })] ];
+      });
+      for my $sensor (qw( temp ph orp ec )) {
+        my $id = 'aqhive_'.$sensor.$no;
+        my ( $name, $func, $unit ) = @{$sensor_names_and_units{$sensor}};
+        $self->add_tile( 'aqhive_'.$sensor.$no => App::AquariumHive::Tile->new(
+          id => $id,
+          bgcolor => 'lightTeal',
+          content => <<"__HTML__",
 
 <div class="large">
   <div>AqHive 1</div>
@@ -183,7 +186,7 @@ __HTML__
 </div>
 
 __HTML__
-        js => <<"__JS__",
+          js => <<"__JS__",
 
 socket.on('aqhive', function(aqhive){
   \$('#aqhive_val_$sensor$no').text(aqhive.$sensor$no);
@@ -194,35 +197,37 @@ socket.on('aqhive', function(aqhive){
 });
 
 __JS__
-      ));
+        ));
+      }    
     }
   }
 
-  for my $pwm (1..6) {
-    $self->on_socketio ( 'pwm'.$pwm, sub {
-      my ( $app, $data ) = @_;
-      if ($data->{cmd}) {
-        my $cmd = $data->{cmd};
-        if ($cmd eq 'next') {
-          my $next = $self->pwm_step_state->{$pwm} + 1;
-          $next = 63 if $next > 63;
-          $app->command_aqhive( 'set_pwm', "".$pwm, "".$pwm_steps[$next]);
-        } elsif ($cmd eq 'prev') {
-          my $prev = $self->pwm_step_state->{$pwm} - 1;
-          $prev = 0 if $prev < 0;
-          $app->command_aqhive( 'set_pwm', "".$pwm, "".$pwm_steps[$prev]);
-        } elsif ($cmd eq 'first') {
-          $app->command_aqhive( 'set_pwm', "".$pwm, "0");
-        } elsif ($cmd eq 'last') {
-          $app->command_aqhive( 'set_pwm', "".$pwm, "1023");
+  unless ($self->no_pwm) {    
+    for my $pwm (1..6) {
+      $self->on_socketio ( 'pwm'.$pwm, sub {
+        my ( $app, $data ) = @_;
+        if ($data->{cmd}) {
+          my $cmd = $data->{cmd};
+          if ($cmd eq 'next') {
+            my $next = $self->pwm_step_state->{$pwm} + 1;
+            $next = 63 if $next > 63;
+            $app->command_aqhive( 'set_pwm', "".$pwm, "".$pwm_steps[$next]);
+          } elsif ($cmd eq 'prev') {
+            my $prev = $self->pwm_step_state->{$pwm} - 1;
+            $prev = 0 if $prev < 0;
+            $app->command_aqhive( 'set_pwm', "".$pwm, "".$pwm_steps[$prev]);
+          } elsif ($cmd eq 'first') {
+            $app->command_aqhive( 'set_pwm', "".$pwm, "0");
+          } elsif ($cmd eq 'last') {
+            $app->command_aqhive( 'set_pwm', "".$pwm, "1023");
+          }
         }
-      }
-    });
-    $self->add_tile( 'aqhive_pwm'.$pwm, App::AquariumHive::Tile->new(
-      id => 'aqhive_pwm'.$pwm,
-      bgcolor => 'cyan',
-      class => 'pwm-tile',
-      content => <<"__HTML__",
+      });
+      $self->add_tile( 'aqhive_pwm'.$pwm, App::AquariumHive::Tile->new(
+        id => 'aqhive_pwm'.$pwm,
+        bgcolor => 'cyan',
+        class => 'pwm-tile',
+        content => <<"__HTML__",
 
 <a id="aqhive_first_pwm$pwm" class="button">
   <i class="icon-first-2"></i>
@@ -241,7 +246,7 @@ __JS__
 </a>
 
 __HTML__
-      js => <<"__JS__",
+        js => <<"__JS__",
 
 socket.on('aqhive', function(aqhive){
   \$('#aqhive_val_pwm$pwm').text(aqhive.pwm$pwm);
@@ -264,7 +269,8 @@ socket.on('aqhive', function(aqhive){
 });
 
 __JS__
-    ));    
+      ));    
+    }
   }
 
 }
@@ -281,7 +287,7 @@ App::AquariumHive::Plugin::AqHive
 
 =head1 VERSION
 
-version 0.002
+version 0.003
 
 =head1 DESCRIPTION
 

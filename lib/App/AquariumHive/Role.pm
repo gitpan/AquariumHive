@@ -2,7 +2,7 @@ package App::AquariumHive::Role;
 BEGIN {
   $App::AquariumHive::Role::AUTHORITY = 'cpan:GETTY';
 }
-$App::AquariumHive::Role::VERSION = '0.002';
+$App::AquariumHive::Role::VERSION = '0.003';
 use Moo::Role;
 with 'App::AquariumHive::LogRole';
 
@@ -16,6 +16,9 @@ has app => (
     on_socketio
     send
     run_cmd
+    sensor_rows
+    no_pwm
+    no_power
   )],
 );
 
@@ -31,7 +34,7 @@ App::AquariumHive::Role
 
 =head1 VERSION
 
-version 0.002
+version 0.003
 
 =head1 AUTHOR
 
