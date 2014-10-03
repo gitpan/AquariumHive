@@ -2,7 +2,7 @@ package AquariumHive::State;
 BEGIN {
   $AquariumHive::State::AUTHORITY = 'cpan:GETTY';
 }
-$AquariumHive::State::VERSION = '0.001';
+$AquariumHive::State::VERSION = '0.002';
 use Moo;
 
 our @attributes;
@@ -52,7 +52,7 @@ AquariumHive::State
 
 =head1 VERSION
 
-version 0.001
+version 0.002
 
 =head1 DESCRIPTION
 

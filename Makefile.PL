@@ -31,6 +31,7 @@ my %WriteMakefileArgs = (
     "AnyEvent" => 0,
     "AnyEvent::HTTP" => 0,
     "AnyEvent::HiveJSO" => "0.002",
+    "AnyEvent::JSONRPC" => 0,
     "AnyEvent::SerialPort" => 0,
     "AnyEvent::Timer::Cron" => 0,
     "Config::INI" => 0,
@@ -61,7 +62,7 @@ my %WriteMakefileArgs = (
   "TEST_REQUIRES" => {
     "Test::More" => "0.96"
   },
-  "VERSION" => "0.001",
+  "VERSION" => "0.002",
   "test" => {
     "TESTS" => "t/*.t"
   }
@@ -73,6 +74,7 @@ my %FallbackPrereqs = (
   "AnyEvent" => 0,
   "AnyEvent::HTTP" => 0,
   "AnyEvent::HiveJSO" => "0.002",
+  "AnyEvent::JSONRPC" => 0,
   "AnyEvent::SerialPort" => 0,
   "AnyEvent::Timer::Cron" => 0,
   "Config::INI" => 0,

@@ -2,7 +2,7 @@ package DigitalX::AqHive::Temp;
 BEGIN {
   $DigitalX::AqHive::Temp::AUTHORITY = 'cpan:GETTY';
 }
-$DigitalX::AqHive::Temp::VERSION = '0.001';
+$DigitalX::AqHive::Temp::VERSION = '0.002';
 use Digital::Driver;
 
 with qw(
@@ -27,7 +27,7 @@ DigitalX::AqHive::Temp
 
 =head1 VERSION
 
-version 0.001
+version 0.002
 
 =head1 DESCRIPTION
 

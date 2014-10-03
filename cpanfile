@@ -5,6 +5,7 @@ requires 'AnyEvent::HiveJSO', '0.002';
 requires 'AnyEvent::HTTP', '0';
 requires 'AnyEvent::SerialPort', '0';
 requires 'AnyEvent::Timer::Cron', '0';
+requires 'AnyEvent::JSONRPC', '0';
 requires 'Config::INI', '0';
 requires 'Data::Printer', '0';
 requires 'DateTime', '0';

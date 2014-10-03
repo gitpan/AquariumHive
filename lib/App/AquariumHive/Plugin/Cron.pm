@@ -2,7 +2,7 @@ package App::AquariumHive::Plugin::Cron;
 BEGIN {
   $App::AquariumHive::Plugin::Cron::AUTHORITY = 'cpan:GETTY';
 }
-$App::AquariumHive::Plugin::Cron::VERSION = '0.001';
+$App::AquariumHive::Plugin::Cron::VERSION = '0.002';
 use Moo;
 use App::AquariumHive::Tile;
 use JSON::MaybeXS;
@@ -57,7 +57,7 @@ App::AquariumHive::Plugin::Cron
 
 =head1 VERSION
 
-version 0.001
+version 0.002
 
 =head1 DESCRIPTION
 

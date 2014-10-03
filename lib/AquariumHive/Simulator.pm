@@ -2,7 +2,7 @@ package AquariumHive::Simulator;
 BEGIN {
   $AquariumHive::Simulator::AUTHORITY = 'cpan:GETTY';
 }
-$AquariumHive::Simulator::VERSION = '0.001';
+$AquariumHive::Simulator::VERSION = '0.002';
 use Moo;
 use AnyEvent::Handle;
 use AnyEvent::Util 'portable_socketpair';
@@ -174,7 +174,7 @@ AquariumHive::Simulator
 
 =head1 VERSION
 
-version 0.001
+version 0.002
 
 =head1 DESCRIPTION
 

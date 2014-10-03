@@ -3,7 +3,7 @@ BEGIN {
   $AquariumHive::AUTHORITY = 'cpan:GETTY';
 }
 # ABSTRACT: Aquarium Hive
-$AquariumHive::VERSION = '0.001';
+$AquariumHive::VERSION = '0.002';
 use strict;
 use warnings;
 
@@ -21,7 +21,7 @@ AquariumHive - Aquarium Hive
 
 =head1 VERSION
 
-version 0.001
+version 0.002
 
 =head1 DESCRIPTION
 

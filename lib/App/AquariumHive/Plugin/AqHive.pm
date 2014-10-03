@@ -2,7 +2,7 @@ package App::AquariumHive::Plugin::AqHive;
 BEGIN {
   $App::AquariumHive::Plugin::AqHive::AUTHORITY = 'cpan:GETTY';
 }
-$App::AquariumHive::Plugin::AqHive::VERSION = '0.001';
+$App::AquariumHive::Plugin::AqHive::VERSION = '0.002';
 use Moo;
 use App::AquariumHive::Tile;
 use JSON::MaybeXS;
@@ -17,6 +17,23 @@ use Digital qw(
 with qw(
   App::AquariumHive::Role
 );
+
+use AnyEvent::JSONRPC::TCP::Client;
+
+has kioskd_client => (
+  is => 'rw',
+);
+
+sub new_kioskd_client {
+  my ( $self ) = @_;
+  return AnyEvent::JSONRPC::TCP::Client->new(
+    host => '127.0.0.1',
+    port => 24025,
+    on_error => sub {
+      $self->kioskd_client($self->new_kioskd_client);
+    },
+  );
+}
 
 our @pwm_steps = qw(
     0   1   1   2   2   2   2   2   3   3
@@ -59,6 +76,8 @@ sub pwm_to_step {
 
 sub BUILD {
   my ( $self ) = @_;
+
+  $self->kioskd_client($self->new_kioskd_client);
 
   if ($self->app->simulation) {
     $self->web_mount( 'simulator', sub {
@@ -108,6 +127,27 @@ __JS__
       }
     }
     $app->send( aqhive => \%aqhive );
+    for my $no (1..2) {
+      $self->kioskd_client->call( Update => {
+        name => 'values'.$no,
+        type => 'text',
+        text => join(' ',(
+          $aqhive{'ph'.$no},'ph',
+          $aqhive{'orp'.$no},'mV',
+          $aqhive{'temp'.$no},'C',
+          $aqhive{'ec'.$no},'yS/cm',
+        )),
+        x => ( 6 + ( 30 * ( $no - 1 ) ) ),
+        y => 6,
+        w => 1000,
+        h => 30,
+        font_path => '/opt/kioskd/fonts/din1451alt.ttf',
+        font_point_size => 24,
+        colour => [255, 255, 255, 255],
+      })->cb(sub {
+        eval { $_[0]->recv };
+      });
+    }
   });
 
   $self->on_socketio( aqhive => sub {
@@ -241,7 +281,7 @@ App::AquariumHive::Plugin::AqHive
 
 =head1 VERSION
 
-version 0.001
+version 0.002
 
 =head1 DESCRIPTION
 

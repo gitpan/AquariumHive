@@ -3,7 +3,7 @@ BEGIN {
   $App::AquariumHive::AUTHORITY = 'cpan:GETTY';
 }
 # ABSTRACT: Temporary Daemon - will later be replaced by HiveHub
-$App::AquariumHive::VERSION = '0.001';
+$App::AquariumHive::VERSION = '0.002';
 our $VERSION ||= '0.000';
 
 use MooX qw(
@@ -415,7 +415,7 @@ App::AquariumHive - Temporary Daemon - will later be replaced by HiveHub
 
 =head1 VERSION
 
-version 0.001
+version 0.002
 
 =head1 DESCRIPTION
 

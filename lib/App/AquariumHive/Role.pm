@@ -2,7 +2,7 @@ package App::AquariumHive::Role;
 BEGIN {
   $App::AquariumHive::Role::AUTHORITY = 'cpan:GETTY';
 }
-$App::AquariumHive::Role::VERSION = '0.001';
+$App::AquariumHive::Role::VERSION = '0.002';
 use Moo::Role;
 with 'App::AquariumHive::LogRole';
 
@@ -31,7 +31,7 @@ App::AquariumHive::Role
 
 =head1 VERSION
 
-version 0.001
+version 0.002
 
 =head1 AUTHOR
 

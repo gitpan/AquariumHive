@@ -2,7 +2,7 @@ package App::AquariumHive::Plugin::AqHive::State;
 BEGIN {
   $App::AquariumHive::Plugin::AqHive::State::AUTHORITY = 'cpan:GETTY';
 }
-$App::AquariumHive::Plugin::AqHive::State::VERSION = '0.001';
+$App::AquariumHive::Plugin::AqHive::State::VERSION = '0.002';
 use Moo;
 
 our @attributes;
@@ -42,7 +42,7 @@ App::AquariumHive::Plugin::AqHive::State
 
 =head1 VERSION
 
-version 0.001
+version 0.002
 
 =head1 DESCRIPTION
 
