@@ -1,0 +1,91 @@
+==================================================
+Changes from 1740-12-19 00:00:00 +0000 to present.
+==================================================
+
+------------------------------------------
+version 0.001 at 2014-10-03 00:45:06 +0000
+------------------------------------------
+
+  Change: d3d9f6eaddb5c085d45c1a7520793d04eedb04a6
+  Author: Torsten Raudssus <torsten@raudss.us>
+  Date : 2014-10-03 02:44:59 +0000
+
+    Bleh! 
+
+  Change: c2b071086551a0b5a896a9f759e89ad1a2cd41c4
+  Author: Torsten Raudssus <torsten@raudss.us>
+  Date : 2014-10-03 01:35:36 +0000
+
+    MMMEEEEHHHHHH 
+
+  Change: 51523ac0d1558748a12ef218a52e95f70ae9ab10
+  Author: Torsten Raudssus <torsten@raudss.us>
+  Date : 2014-10-03 01:16:51 +0000
+
+    Changed pwm command concept 
+
+  Change: e0e2098355ce10ed6ffabbc44e1a5d64bcee36f2
+  Author: Torsten Raudssus <torsten@raudss.us>
+  Date : 2014-10-03 00:37:40 +0000
+
+    Travis config, load test, new requirements, tuning adc_fix (more
+    floats!) 
+
+  Change: e7b0a66886b08ef8e8e4568938f532cfa59ca382
+  Author: Torsten Raudssus <torsten@raudss.us>
+  Date : 2014-10-02 22:06:05 +0000
+
+    ABSTRACT 
+
+  Change: 54d7dd25c54a6e45d771e7a8d259089b42b9875a
+  Author: Torsten Raudssus <torsten@raudss.us>
+  Date : 2014-10-02 22:04:51 +0000
+
+    DB Schema class (no wor done yet), new background, PWM stepper 
+
+  Change: 0a516b82baad2665542abf0273a53f31092e9217
+  Author: Torsten Raudssus <torsten@raudss.us>
+  Date : 2014-10-02 00:01:40 +0000
+
+    Code code code! 
+
+  Change: 0c41e5cb99a5e1067028fb3e26fcd48a32e363b9
+  Author: Torsten Raudssus <torsten@raudss.us>
+  Date : 2014-09-28 21:28:11 +0000
+
+    Ok, power outlets now also added automatically if connected 
+
+  Change: 06c5f323945fc7ce11b2c4d45d10c8f555dcd17d
+  Author: Torsten Raudssus <torsten@raudss.us>
+  Date : 2014-09-26 04:15:49 +0000
+
+    More, More, More!!!!!!! still WIP 
+
+  Change: b131298a5c771fc08df668ef83afc78c9ae10f38
+  Author: Torsten Raudssus <torsten@raudss.us>
+  Date : 2014-09-20 03:58:01 +0000
+
+    Yeah! Simulation! Yeah! 
+
+  Change: 29d9a79877a1e6feafd4ccc503f818ea66a608a4
+  Author: Torsten Raudssus <torsten@raudss.us>
+  Date : 2014-09-19 23:02:53 +0000
+
+    Base root (copied of HiveHub, still needs tuning), base simulator
+    implementation (only echo so far) 
+
+  Change: 50a0c41c4d70ade50a584d2e0850b75e8af49443
+  Author: Torsten Raudssus <torsten@raudss.us>
+  Date : 2014-09-19 04:01:49 +0000
+
+    WIP 
+
+  Change: 8a5a2246f9c04398b0bc24a51451dd520bcefa59
+  Author: Torsten Raudssus <torsten@raudss.us>
+  Date : 2014-09-18 18:24:40 +0000
+
+    initial commit 
+
+================
+End of releases.
+================
